@@ -120,25 +120,25 @@ void dd_scheduler_main(os_task_param_t task_init_data)
 
 	//start task list experimental code-GITIGNORE ME ANOTHER TEST
 
-	task_list *active_list_head = NULL;
-	task_list *current_task;
+	task_list_t *active_list_head = NULL;
+	task_list_t *current_task;
 
 	current_task = dd_task_create_entry();
 
 	dd_task_struct_init( current_task, 1, 6, 0 );
 	//printf("\r\nTID: %d\r\n", current_task->tid);
 	active_list_head = dd_task_insert( current_task, active_list_head );
-	current_task = dd_task_create_entry();
-	dd_task_struct_init( current_task, 2, 5, 0 );
-	active_list_head = dd_task_insert( current_task, active_list_head );
-
-	current_task = dd_task_create_entry();
-	dd_task_struct_init( current_task, 8, 6, 0 );
-	active_list_head = dd_task_insert( current_task, active_list_head );
-
-	current_task = dd_task_create_entry();
-	dd_task_struct_init( current_task, 3, 7, 0 );
-	active_list_head = dd_task_insert( current_task, active_list_head );
+//	current_task = dd_task_create_entry();
+//	dd_task_struct_init( current_task, 2, 5, 0 );
+//	active_list_head = dd_task_insert( current_task, active_list_head );
+//
+//	current_task = dd_task_create_entry();
+//	dd_task_struct_init( current_task, 8, 6, 0 );
+//	active_list_head = dd_task_insert( current_task, active_list_head );
+//
+//	current_task = dd_task_create_entry();
+//	dd_task_struct_init( current_task, 3, 7, 0 );
+//	active_list_head = dd_task_insert( current_task, active_list_head );
 
 
 	//printf("\r\nTID: %d\r\n", active_list_head->tid);

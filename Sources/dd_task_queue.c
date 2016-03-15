@@ -7,7 +7,7 @@
 
 
 #include "dd_task_queue.h"
-task_list* create_task_entry( void );
+task_list_t* create_task_entry( void );
 
 //typedef struct task_list_type
 //{
@@ -19,17 +19,17 @@ task_list* create_task_entry( void );
 //	struct task_list *previous_cell;
 //} task_list;
 
-task_list active_list;
-task_list overdue_list;
+task_list_t active_list;
+task_list_t overdue_list;
 
-task_list* dd_task_create_entry( void )
+task_list_t* dd_task_create_entry( void )
 {
-	task_list *temp;
-	temp = (OSA_MemAlloc( sizeof( task_list ) ));
+	task_list_t *temp;
+	temp = (OSA_MemAlloc( sizeof( task_list_t ) ));
 	return temp;
 }
 
-void dd_task_struct_init( task_list *input, uint32_t tid, uint32_t deadline, uint32_t task_type )
+void dd_task_struct_init( task_list_t *input, uint32_t tid, uint32_t deadline, uint32_t task_type )
 {
 	input->tid = tid;
 	input->deadline = deadline;
@@ -39,10 +39,10 @@ void dd_task_struct_init( task_list *input, uint32_t tid, uint32_t deadline, uin
 	input->previous_cell = NULL;
 }
 
-task_list* dd_task_insert(task_list *insert_task, task_list *head )
+task_list_t* dd_task_insert(task_list_t *insert_task, task_list_t *head )
 {
-	task_list *current_task;
-	task_list *temp_task_ptr;
+	task_list_t *current_task;
+	task_list_t *temp_task_ptr;
 	uint8_t count = 0;
 
 	if ( head == NULL )
@@ -59,7 +59,7 @@ task_list* dd_task_insert(task_list *insert_task, task_list *head )
 
 			if ( current_task->deadline < insert_task->deadline )
 			{
-				current_task = (task_list*)(current_task->next_cell);
+				current_task = (task_list_t*)(current_task->next_cell);
 				//printf("ListIncremented\r\n");
 				count++;
 			}
@@ -81,9 +81,9 @@ task_list* dd_task_insert(task_list *insert_task, task_list *head )
 	}
 	return head;
 }
-uint8_t dd_task_list_queue( task_list *head )
+uint8_t dd_task_list_queue( task_list_t *head )
 {
-	task_list *current_task;
+	task_list_t *current_task;
 	current_task = head;
 	uint8_t count=0;
 
@@ -98,9 +98,9 @@ uint8_t dd_task_list_queue( task_list *head )
 }
 
 //To be called when task finishes to remove it from the list
-void dd_task_delete_top( task_list *head )
+void dd_task_delete_top( task_list_t *head )
 {
-	task_list *temp;
+	task_list_t *temp;
 	temp = head;
 	head = head->next_cell;
 	OSA_MemFree( temp );
