@@ -251,8 +251,8 @@ void dd_user_task_main(os_task_param_t task_init_data)
 	while (1) {
 
     /* Write your code here ... */
-    for(i=0; i<10000 ; i++){
-
+    for(i=0; i<100000000 ; i++){
+    	//waste time
     }
     printf("user task\n");
    // dd_return_active_list();
