@@ -30,7 +30,7 @@ extern "C" {
 
 _pool_id char_message_pool;
 _pool_id uint32_message_pool;
-
+//hello
 /*
 ** ===================================================================
 **     Callback    : dd_scheduler_main
