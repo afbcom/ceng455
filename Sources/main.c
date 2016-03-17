@@ -45,6 +45,7 @@
 #include "myUART.h"
 #include "dd_user_task.h"
 #include "TX.h"
+#include "generator.h"
 #if CPU_INIT_CONFIG
   #include "Init_Config.h"
 #endif

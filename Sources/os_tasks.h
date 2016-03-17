@@ -46,6 +46,7 @@
 #include "myUART.h"
 #include "dd_user_task.h"
 #include "TX.h"
+#include "generator.h"
 #include "message.h"
 #include "mutex.h"
 #include "access_functions.h"
@@ -135,6 +136,17 @@ void dd_scheduler_main(os_task_param_t task_init_data);
 ** ===================================================================
 */
 void TX_task(os_task_param_t task_init_data);
+
+/*
+** ===================================================================
+**     Callback    : task_generator
+**     Description : Task function entry.
+**     Parameters  :
+**       task_init_data - OS task parameter
+**     Returns : Nothing
+** ===================================================================
+*/
+void task_generator(os_task_param_t task_init_data);
 
 /* END os_tasks */
 

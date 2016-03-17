@@ -44,6 +44,7 @@
 #include "myUART.h"
 #include "dd_user_task.h"
 #include "TX.h"
+#include "generator.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -91,8 +91,23 @@ _task_id dd_tcreate(uint32_t template_index, uint32_t deadline){
 
 uint32_t dd_delete(uint32_t task_id){
 
+	UINT32_MESSAGE_PTR msg_ptr;
 
 
+	msg_ptr = ( UINT32_MESSAGE_PTR )_msg_alloc( uint32_message_pool );
+	if ( msg_ptr == NULL ){	printf( "\nCould not allocate a message for dd_tcreate\n" );return 0;}
+
+	msg_ptr->HEADER.SOURCE_QID = 0;
+	msg_ptr->HEADER.TARGET_QID = _msgq_get_id( 0, SCHEDLUER_QUEUE );
+	msg_ptr->HEADER.SIZE = sizeof(MESSAGE_HEADER_STRUCT) +
+			sizeof(msg_ptr->DATA)+ 4 ;
+
+	msg_ptr->DATA[0] = 'D';
+	msg_ptr->DATA[1] =  task_id;
+	msg_ptr->DATA[2] =  0;
+
+	_msgq_send(msg_ptr);
+	_task_destroy(task_id);
 
 	return 0;
 
@@ -101,12 +116,44 @@ uint32_t dd_delete(uint32_t task_id){
 
 uint32_t dd_return_active_list(){
 
+	UINT32_MESSAGE_PTR msg_ptr;
+
+
+	msg_ptr = ( UINT32_MESSAGE_PTR )_msg_alloc( uint32_message_pool );
+	if ( msg_ptr == NULL ){	printf( "\nCould not allocate a message for dd_tcreate\n" );return 0;}
+
+	msg_ptr->HEADER.SOURCE_QID = 0;
+	msg_ptr->HEADER.TARGET_QID = _msgq_get_id( 0, SCHEDLUER_QUEUE );
+	msg_ptr->HEADER.SIZE = sizeof(MESSAGE_HEADER_STRUCT) +
+			sizeof(msg_ptr->DATA)+ 4 ;
+
+	msg_ptr->DATA[0] = 'A';
+	msg_ptr->DATA[1] =  0;
+
+	_msgq_send(msg_ptr);
+
 	return 0;
 }
 //struct task_list **list
 
 //struct overdue_tasks **list
 uint32_t dd_return_overdue_list(){
+
+	UINT32_MESSAGE_PTR msg_ptr;
+
+
+	msg_ptr = ( UINT32_MESSAGE_PTR )_msg_alloc( uint32_message_pool );
+	if ( msg_ptr == NULL ){	printf( "\nCould not allocate a message for dd_tcreate\n" );return 0;}
+
+	msg_ptr->HEADER.SOURCE_QID = 0;
+	msg_ptr->HEADER.TARGET_QID = _msgq_get_id( 0, SCHEDLUER_QUEUE );
+	msg_ptr->HEADER.SIZE = sizeof(MESSAGE_HEADER_STRUCT) +
+			sizeof(msg_ptr->DATA)+ 4 ;
+
+	msg_ptr->DATA[0] = 'O';
+	msg_ptr->DATA[1] =  0;
+
+	_msgq_send(msg_ptr);
 
 	return 0;
 }
