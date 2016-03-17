@@ -28,7 +28,6 @@
 **  @{
 */         
 /* MODULE os_tasks */
-
 #include "Cpu.h"
 #include "Events.h"
 #include "rtos_main_task.h"
@@ -91,8 +90,7 @@ void dd_monitor_main(os_task_param_t task_init_data)
 	monitor_qid = _msgq_open(MONITOR_QUEUE, 0);
 
 	dd_tcreate(DD_USER_TASK_TASK, 0);
-	//dd_tcreate(DD_USER_TASK_TASK, 0);
-	//dd_tcreate(DD_USER_TASK_TASK, 0);
+
 	while(1)
 	{
 		msg_ptr=_msgq_receive(monitor_qid, 0);
@@ -124,6 +122,7 @@ void dd_scheduler_main(os_task_param_t task_init_data)
 	task_list_t *current_task;
 
 	current_task = dd_task_create_entry();
+	scheduler_qid=_msgq_open(SCHEDLUER_QUEUE,0);
 
 	dd_task_struct_init( current_task, 1, 6, 0 );
 	//printf("\r\nTID: %d\r\n", current_task->tid);
@@ -147,10 +146,6 @@ void dd_scheduler_main(os_task_param_t task_init_data)
 	//printf("Task Count: %d\r\n", dd_task_list_queue( active_list_head ) );
 
 	//end task list experimental code
-
-
-	scheduler_qid=_msgq_open(SCHEDLUER_QUEUE,0);
-
 
 
 	while(1)
@@ -212,17 +207,23 @@ uint8_t init(void){
 	NUM_CLIENTS, 1, 0);
 
 	if ( uint32_message_pool == MSGPOOL_NULL_POOL_ID )
-	  { printf( "\nErr: create Uint32 message pool\n" );_task_block(); return 1;}
+	  { printf( "\nErr: create Uint32 message pool\n" );_task_block(); return 0;}
 
 	//Open message pool for TX
+
 	char_message_pool = _msgpool_create(sizeof(CHAR_MESSAGE),
 	NUM_CLIENTS, 1, 0);
+
 	if ( char_message_pool == MSGPOOL_NULL_POOL_ID )
-	  { printf( "\nErr: create Char message pool\n" );_task_block(); return 1;}
+	  { printf( "\nErr: create Char message pool\n" );_task_block(); return 0;}
+
+	_task_create(0, TX_TASK, (uint32_t)(NULL) );
+	OSA_TimeDelay(1);
+	_task_create(0, DD_MONITOR_TASK, (uint32_t)(NULL) );
+	_task_create(0, DD_USER_TASK_TASK, (uint32_t)(NULL) );
 
 
-
-	return 0;
+	return 1;
 
 }
 
