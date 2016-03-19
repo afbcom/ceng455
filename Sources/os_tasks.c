@@ -251,12 +251,11 @@ void dd_user_task_main(os_task_param_t task_init_data)
 	while (1) {
 
     /* Write your code here ... */
-    for(i=0; i<100000000 ; i++){
+    for(i=0; i<1000000; i++){
     	//waste time
     }
     printf("user task\n");
-   // dd_return_active_list();
-   // dd_return_overdue_list();
+
     dd_delete(_task_get_id());
 
     OSA_TimeDelay(10);                 /* Example code (for task release) */
@@ -270,6 +269,12 @@ uint8_t init(void){
 
 	uint32_message_pool = _msgpool_create(sizeof(UINT32_MESSAGE),
 	NUM_CLIENTS, 1, 0);
+	uint32_t temp;
+	_task_id taks_id = _task_get_id();
+
+	_task_get_priority(  taks_id, &temp);
+	_task_set_priority( taks_id, 16, &temp);
+
 
 	if ( uint32_message_pool == MSGPOOL_NULL_POOL_ID )
 	  { printf( "\nErr: create Uint32 message pool\n" );_task_block(); return 0;}

@@ -31,10 +31,13 @@ task_list_t* dd_task_create_entry( void )
 
 void dd_task_struct_init( task_list_t *input, uint32_t tid, uint32_t deadline, uint32_t task_type )
 {
+	MQX_TICK_STRUCT ticks;
+	_time_get_ticks(&ticks);
 	input->tid = tid;
+	if ( deadline == 0 ) { deadline = 10000; }
 	input->deadline = deadline;
 	input->task_type = task_type;
-	input->creation_time = 0;  //FIXME
+	input->creation_time = ticks.TICKS[0];  //FIXME
 	input->next_cell = NULL;
 	input->previous_cell = NULL;
 }
