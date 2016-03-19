@@ -22,21 +22,21 @@ typedef struct task_list_
 	uint32_t deadline;
 	uint32_t task_type;
 	uint32_t creation_time;
-	struct task_list *next_cell;
-	struct task_list *previous_cell;
-} task_list_t;
+	struct task_list_ *next_cell;
+	struct task_list_ *previous_cell;
+} task_list_type;
 
 typedef struct task_list_ptr
 {
-	task_list_t *head;
-	task_list_t *tail;
+	task_list_type *head;
+	task_list_type *tail;
 	uint8_t length;
 } task_list_ptr_type;
 
-task_list_t* dd_task_create_entry( void );
-void 		dd_task_struct_init( task_list_t *input, uint32_t tid, uint32_t deadline, uint32_t task_type );
-task_list_t* 	dd_task_insert( task_list_t *task, task_list_t *head );
-uint8_t dd_task_list_queue( task_list_t *head );
-void 		dd_task_delete_top( task_list_t *head );
+task_list_type* dd_task_create_entry( void );
+void 			dd_task_struct_init( task_list_type *input, uint32_t tid, uint32_t deadline, uint32_t task_type );
+void	 		dd_task_insert( task_list_type *task, task_list_ptr_type *head );
+uint8_t 		dd_task_list_queue( task_list_type *head );
+void 			dd_task_delete_top( task_list_type *head );
 
 
