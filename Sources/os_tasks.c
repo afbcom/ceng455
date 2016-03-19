@@ -242,7 +242,7 @@ void dd_monitor_main(os_task_param_t task_init_data)
 **     Description : Task function entry.
 **     Parameters  :
 **       task_init_data - OS task parameter
-**     Returns : Nothing
+**     Returns : Nothingd
 ** ===================================================================
 */
 void dd_user_task_main(os_task_param_t task_init_data)
