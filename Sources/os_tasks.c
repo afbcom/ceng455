@@ -46,13 +46,12 @@ void dd_scheduler_main(os_task_param_t task_init_data)
 	UINT32_MESSAGE_PTR msg_ptr;
 	_queue_id scheduler_qid;
 
+	task_list_ptr_type head_ptr;
+	task_list_type *current_task;
+
 	init();
 
 	//start task list experimental code-GITIGNORE ME ANOTHER TEST
-
-	task_list_ptr_type head_ptr;
-
-	task_list_type *current_task;
 
 	current_task = dd_task_create_entry();
 	scheduler_qid=_msgq_open(SCHEDLUER_QUEUE,0);
@@ -60,20 +59,7 @@ void dd_scheduler_main(os_task_param_t task_init_data)
 	dd_task_struct_init( current_task, 1, 6, 0 );
 	//printf("\r\nTID: %d\r\n", current_task->tid);
 	dd_task_insert( current_task, &head_ptr );
-//	current_task = dd_task_create_entry();
-//	dd_task_struct_init( current_task, 2, 5, 0 );
-//	active_list_head = dd_task_insert( current_task, active_list_head );
-//
-//	current_task = dd_task_create_entry();
-//	dd_task_struct_init( current_task, 8, 6, 0 );
-//	active_list_head = dd_task_insert( current_task, active_list_head );
-//
-//	current_task = dd_task_create_entry();
-//	dd_task_struct_init( current_task, 3, 7, 0 );
-//	active_list_head = dd_task_insert( current_task, active_list_head );
-//printf("\r\nTID: %d\r\n", active_list_head->tid);
-//dd_task_list_queue( active_list_head );
-//printf("Task Count: %d\r\n", dd_task_list_queue( active_list_head ) );
+
 //end task list experimental code
 
 
