@@ -2,4 +2,9 @@
 *.d
 *.hex
 *.o
+<<<<<<< HEAD
+*.cproject
+/Debug/
+=======
 *.map
+>>>>>>> branch 'master' of https://github.com/afbcom/ceng455.git
