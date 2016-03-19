@@ -49,52 +49,74 @@ void dd_task_insert(task_list_type *insert_task, task_list_ptr_type *head )
 	uint8_t count = 0;
 	uint8_t headflag = 1;
 	uint8_t exitflag = 1;
+	printf("-\n");
 
-	if ( head->length == 0 )
+	current_task = head->head;
+	while ( exitflag )
 	{
-		head->head = insert_task;
-		head->length++;
-	}
-	else
-	{
-		current_task = head->head;
-		while ( current_task != NULL && exitflag)
+
+		if ( head->length == 0 )	//empty list
 		{
-			if ( current_task->deadline < insert_task->deadline )
+			head->head = insert_task;
+			head->length++;
+			exitflag = 0;
+		}
+		else
+		{
+			printf("c:%d l:%d\n", count, head->length);
+			if ( count < head->length )	//perhaps remove count > 0 and integrate above
 			{
-				current_task = current_task->next_cell;
-				//current_task = (task_list_t*)(current_task->next_cell);
-				headflag = 0;
+				if ( current_task->deadline < insert_task->deadline )
+				{
+					if ( current_task->next_cell != NULL ) { current_task = current_task->next_cell; }
+				}
+				else
+				{
+					//insert in front of current task
+					insert_task->next_cell = current_task;
+					if ( count == 0 )
+					{
+						insert_task->previous_cell = NULL;
+						head->head = insert_task;
+					}
+					else
+					{
+						temp_task_ptr = current_task->previous_cell;	//Special case count == 0
+						insert_task->previous_cell = temp_task_ptr;
+						temp_task_ptr->next_cell = insert_task;
+					}
+					current_task->previous_cell = insert_task;
+					head->length++;
+					exitflag = 0;
+				}
+			}
+			else if ( count == head->length )
+			{
+				//end of the list
+
+				insert_task->next_cell = NULL;
+				current_task->next_cell = insert_task;
 				exitflag = 0;
 			}
-			else	//Current Tasks Deadline is greater,
-			{		//therefore insert in front of current task
-				insert_task->next_cell = current_task;
-				if ( count )
-				{
-					insert_task->previous_cell = current_task->previous_cell;
-					temp_task_ptr = current_task->previous_cell;
-					temp_task_ptr->next_cell = insert_task;
-				}
-				//current_task->previous_cell->next_cell = insert_task;
-				current_task->previous_cell = insert_task;
-				current_task = NULL;//exit the loop
-				printf("TI\r\n");
-				if( headflag ) { head->head = insert_task; }
-			}
+
+
+
+
 		}
+		count++;
 	}
 }
-uint8_t dd_task_list_queue( task_list_type *head )
+uint8_t dd_task_list_queue( task_list_ptr_type *head )
 {
 	task_list_type *current_task;
-	current_task = head;
+	current_task = head->head;
 	uint8_t count=0;
+	uint8_t exitflag = head->length;
 
-	while ( current_task )
+	while ( count <= exitflag )
 	{
 		//replace printf with send message to tx queue or something
-		//printf("Task ID:%d, Deadline: %d \r\n", current_task->tid, current_task->deadline );
+		printf("TID:%d, Dln: %d \r\n", current_task->tid, current_task->deadline );
 		current_task = current_task->next_cell;
 		count++;
 	}
@@ -109,3 +131,40 @@ void dd_task_delete_top( task_list_type *head )
 	head = head->next_cell;
 	OSA_MemFree( temp );
 }
+
+
+//			if ( ( current_task->deadline < insert_task->deadline ) && ( count < head->length ) )
+//			{
+//				current_task = current_task->next_cell;
+//				headflag = 0;
+//				//count++;
+//			}
+//			else	//Current Tasks Deadline is greater,
+//			{		//therefore insert in front of current task
+//				if ( count == head->length )		//insert at end
+//				{
+//					printf("=D\n");
+//					insert_task->next_cell = NULL;
+//					insert_task->previous_cell = current_task;
+//					//current_task->next_cell = insert_task;
+//				}
+//				else if ( /*count ==*/ 0 )				//insert at start I think
+//				{
+//					insert_task->next_cell = current_task;
+//					insert_task->previous_cell = NULL;
+//					temp_task_ptr = current_task->previous_cell;
+//					temp_task_ptr->next_cell = insert_task;
+//				}
+//				else								//insert in middle somewhere
+//				{
+//					insert_task->next_cell = current_task;
+//					insert_task->previous_cell = current_task->previous_cell;
+//					temp_task_ptr = current_task->previous_cell;
+//					temp_task_ptr->next_cell = insert_task;
+//					current_task->previous_cell = insert_task;
+//				}
+//				printf("TI\r\n");
+//				head->length++;
+//				if( headflag ) { head->head = insert_task; }
+//				exitflag = 0;
+//			}
