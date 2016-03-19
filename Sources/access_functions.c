@@ -50,11 +50,8 @@ _task_id dd_tcreate(uint32_t template_index, uint32_t deadline){
 	if (task_id == MQX_NULL_TASK_ID) { printf("Failed to Create User task"); }
 	printf("task created with task ID %d\n", task_id);
 	_task_get_priority(task_id, &temp);
-	//printf("original priority %d \n", temp);
-	_task_set_priority(task_id, 30, &temp);
-	//_task_get_priority(task_id, &temp);
-	//printf("new priority %d \n", temp);
-	//SEND MESSAGE TO SCHEDULER
+	_task_set_priority(task_id, 23, &temp);
+
 
 	msg_ptr = ( UINT32_MESSAGE_PTR )_msg_alloc( uint32_message_pool );
 	if ( msg_ptr == NULL ){	printf( "\nCould not allocate a message for dd_tcreate\n" );return 0;}
