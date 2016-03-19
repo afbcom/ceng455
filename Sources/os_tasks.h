@@ -60,14 +60,16 @@ extern "C" {
  * defines
  */
 
-#define MONITOR_QUEUE     	3
-#define TRANSMIT_QUEUE		4
-#define dd_CREATE_QUEUE     5
-#define SCHEDLUER_QUEUE     6
-#define msgBuffSize         128
-#define NUM_CLIENTS         (10)
-
-
+#define MONITOR_QUEUE     	 3
+#define TRANSMIT_QUEUE		 4
+#define dd_CREATE_QUEUE      5
+#define SCHEDLUER_QUEUE      6
+#define msgBuffSize          128
+#define NUM_CLIENTS          (10)
+#define LOW_TASK_PRIORITY    23
+#define ACTIVE_TASK_PRIORITY 18
+#define SCHEDULER_PRIORITY   16
+#define GENERATOR_PRIORITY   17
 /*
  * Prototypes
  */

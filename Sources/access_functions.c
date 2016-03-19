@@ -45,12 +45,13 @@ _task_id dd_tcreate(uint32_t template_index, uint32_t deadline){
 
 	//Create task and set priority = lowest
 
-	task_id =_task_create(0, template_index, (uint32_t)(NULL) );
+	task_id =_task_create(0, template_index, deadline );     //FIXME
 
 	if (task_id == MQX_NULL_TASK_ID) { printf("Failed to Create User task"); }
 	printf("task created with task ID %d\n", task_id);
+
 	_task_get_priority(task_id, &temp);
-	_task_set_priority(task_id, 23, &temp);
+	_task_set_priority(task_id, LOW_TASK_PRIORITY , &temp);
 
 
 	msg_ptr = ( UINT32_MESSAGE_PTR )_msg_alloc( uint32_message_pool );
@@ -65,7 +66,8 @@ _task_id dd_tcreate(uint32_t template_index, uint32_t deadline){
 
 	msg_ptr->DATA[0] = 'C';
 	msg_ptr->DATA[1] = task_id;
-	msg_ptr->DATA[2] = 0;
+	msg_ptr->DATA[2] = deadline;
+	msg_ptr->DATA[3] = 0;
 
 	_msgq_send(msg_ptr);
 

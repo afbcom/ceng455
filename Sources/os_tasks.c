@@ -27,6 +27,7 @@
 extern "C" {
 #endif 
 
+MQX_TICK_STRUCT_PTR tick_ptr;
 
 _pool_id char_message_pool;
 _pool_id uint32_message_pool;
@@ -45,7 +46,7 @@ void dd_scheduler_main(os_task_param_t task_init_data)
 
 	UINT32_MESSAGE_PTR msg_ptr;
 	_queue_id scheduler_qid;
-
+	uint temp;
 	init();
 
 	//start task list experimental code-GITIGNORE ME ANOTHER TEST
@@ -87,9 +88,8 @@ void dd_scheduler_main(os_task_param_t task_init_data)
 		case 'C':
 		{
 
-			printf("got message from create with task ID %d\n",
-					msg_ptr->DATA[1]);
-
+			printf("got message from create with task ID %d\n",msg_ptr->DATA[1]);
+			printf("got message from create deadline %d\n",msg_ptr->DATA[2]);
 
 			/*
 			 * Alex Put stuff here.
@@ -198,9 +198,10 @@ void TX_task(os_task_param_t task_init_data)
 void task_generator(os_task_param_t task_init_data)
 {
 
+	dd_tcreate(DD_USER_TASK_TASK, );
   while (1) {
 
-    
+  //  _taskq_suspend();
     OSA_TimeDelay(10);
    
 
@@ -225,7 +226,7 @@ void dd_monitor_main(os_task_param_t task_init_data)
 
 	monitor_qid = _msgq_open(MONITOR_QUEUE, 0);
 
-	dd_tcreate(DD_USER_TASK_TASK, 0);
+
 
 	while(1)
 	{
@@ -247,18 +248,21 @@ void dd_monitor_main(os_task_param_t task_init_data)
 void dd_user_task_main(os_task_param_t task_init_data)
 {
 	uint32_t i;
+	uint32_t startTime;
+
+	_time_get_elapsed_ticks(tick_ptr);
+	startTime = tick_ptr->TICKS;
 
 	while (1) {
 
-    /* Write your code here ... */
-    for(i=0; i<1000000; i++){
-    	//waste time
-    }
-    printf("user task\n");
+		while((tick_ptr->TICKS - startTime) < task_init_data ){
+			_time_get_elapsed_ticks(tick_ptr);
+
+		}
 
     dd_delete(_task_get_id());
 
-    OSA_TimeDelay(10);                 /* Example code (for task release) */
+   // OSA_TimeDelay(10);
 
   }
 
@@ -273,7 +277,7 @@ uint8_t init(void){
 	_task_id taks_id = _task_get_id();
 
 	_task_get_priority(  taks_id, &temp);
-	_task_set_priority( taks_id, 16, &temp);
+	_task_set_priority( taks_id, SCHEDULER_PRIORITY, &temp);
 
 
 	if ( uint32_message_pool == MSGPOOL_NULL_POOL_ID )
